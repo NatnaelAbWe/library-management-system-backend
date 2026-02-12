@@ -1,14 +1,24 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { config } from "./config";
+import mongoose from "mongoose";
 
 dotenv.config();
-const port = Number(process.env.PORT) || 8000;
+const port = config.server.port;
 
 const server: Express = express();
 
 server.use(express.json());
 server.use(cors());
+
+(async function startUp() {
+  try {
+    await mongoose.connect(config.mongo.url);
+  } catch {
+    console.log("could not make a connection to the database");
+  }
+});
 
 // health route
 server.get("/health", (req: Request, res: Response) => {
