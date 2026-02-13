@@ -32,4 +32,4 @@ const UserSchema = new Schema(
   },
 );
 
-export default mongoose.model<Iusermodel>("user", UserSchema);
+export default mongoose.model<Iusermodel>("userDao", UserSchema);
