@@ -1,7 +1,7 @@
 import Joi, { ObjectSchema } from "joi";
 import { NextFunction, Response, Request } from "express";
 // FIX: Added .js extension for ESM/NodeNext compatibility
-import { IUser } from "../models/User.js";
+import { Iuser } from "../models/User.js";
 
 export function ValidateSchema(schema: ObjectSchema) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -18,10 +18,16 @@ export function ValidateSchema(schema: ObjectSchema) {
 
 export const Schemas = {
   user: {
-    create: Joi.object<IUser>({
+    create: Joi.object<Iuser>({
       type: Joi.string().valid("ADMIN", "EMPLOYEE", "PATRON").required(),
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
+      email: Joi.string()
+        .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+        .required(),
+      password: Joi.string().required(),
+    }),
+    login: Joi.object<{ email: string; password: string }>({
       email: Joi.string()
         .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
         .required(),
