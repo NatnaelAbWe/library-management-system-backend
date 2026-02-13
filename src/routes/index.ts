@@ -1,0 +1,10 @@
+import { Express, Request, Response } from "express";
+import authRoutes from "./AuthRoutes.js";
+
+export function registerRoutes(server: Express) {
+  server.get("/health", (req: Request, res: Response) => {
+    res.status(200).json({ message: "The sever is running properly" });
+  });
+
+  server.use("/auth", authRoutes);
+}

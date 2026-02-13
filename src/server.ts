@@ -1,8 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { config } from "./config";
+import { config } from "./config/index.js";
 import mongoose from "mongoose";
+import { registerRoutes } from "./routes/index.js";
 
 dotenv.config();
 const port = config.server.port;
@@ -21,10 +22,9 @@ server.use(cors());
     });
     console.log("connection to mongodb sucessfull!!");
 
-    // health route
-    server.get("/health", (req: Request, res: Response) => {
-      res.status(200).json({ message: "The sever is running properly" });
-    });
+    // routes
+
+    registerRoutes(server);
 
     // start your server
     server.listen(port, () => {
