@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
-import { config } from "../config";
+import { config } from "../config/index.js";
 
-import userDao, { Iusermodel } from "../daos/userData";
-import { Iuser } from "../models/User";
+import userDao, { Iusermodel } from "../daos/userData.js";
+import { Iuser } from "../models/User.js";
 import { promises } from "node:dns";
+import { unableToSaveError } from "../utils/LibraryErrors.js";
 
 export async function register(user: Iuser): Promise<Iusermodel> {
   const ROUNDS = config.server.rounds;
@@ -15,6 +16,6 @@ export async function register(user: Iuser): Promise<Iusermodel> {
 
     return await saved.save();
   } catch (error: any) {
-    throw new Error("Unable to create user at this time");
+    throw new unableToSaveError(error.message);
   }
 }

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { Iuser } from "../models/User";
+import { Iuser } from "../models/User.js";
 
 export interface Iusermodel extends Iuser, Document {}
 

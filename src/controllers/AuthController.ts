@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { register } from "../services/UserService";
-import { Iuser } from "../models/User";
+import { register } from "../services/UserService.js";
+import { Iuser } from "../models/User.js";
 
 async function handleRegister(req: Request, res: Response) {
   const user: Iuser = req.body;
@@ -19,12 +19,17 @@ async function handleRegister(req: Request, res: Response) {
       },
     });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({
+    if (error.message.includes("E11000 duplicate key error collection:")) {
+      res.status(409).json({
+        message: "user with this email alredy exist",
+        error: error.message,
+      });
+    } else {
+      res.status(500).json({
         message: "Unable to register user at this time",
         error: error.message,
       });
+    }
   }
 }
 
