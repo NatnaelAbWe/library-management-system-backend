@@ -24,7 +24,7 @@ export async function register(user: Iuser): Promise<Iusermodel> {
 export async function login(credential: {
   email: string;
   password: string;
-}): Promise<Iuser> {
+}): Promise<Iusermodel> {
   const { email, password } = credential;
   try {
     const user = await userDao.findOne({ email });
@@ -44,5 +44,44 @@ export async function login(credential: {
     }
   } catch (error: any) {
     throw Error;
+  }
+}
+
+export async function findAllUsers(): Promise<Iusermodel[]> {
+  try {
+    const users = await userDao.find();
+    return users;
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function findUserById(userId: string): Promise<Iusermodel> {
+  try {
+    const user = await userDao.findById(userId);
+
+    if (user) return user;
+
+    throw new Error("User does not exist with this id");
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function modifyUser(user: Iusermodel): Promise<Iusermodel> {
+  try {
+    let id = await userDao.findByIdAndUpdate(user._id, user, { new: true });
+    return user;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function removeUser(userId: string): Promise<string> {
+  try {
+    await userDao.findByIdAndDelete(userId);
+    return "user deleted sucessfully";
+  } catch (error) {
+    throw new Error("unable to delete user");
   }
 }
