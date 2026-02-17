@@ -1,6 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { Iuser } from "../models/User.js";
 
+interface data {
+  _id: string;
+}
+
 export interface Iusermodel extends Iuser, Document {}
 
 const UserSchema = new Schema(

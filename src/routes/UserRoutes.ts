@@ -8,4 +8,4 @@ router.get("/:userId", UserController.getUserById);
 router.put("/", UserController.updateUser);
 router.delete("/:userId", UserController.deleteUser);
 
-export { router };
+export default router;
