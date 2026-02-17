@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import authRoutes from "./AuthRoutes.js";
+import userRoutes from "./UserRoutes.js";
 
 export function registerRoutes(server: Express) {
   server.get("/health", (req: Request, res: Response) => {
@@ -7,4 +8,5 @@ export function registerRoutes(server: Express) {
   });
 
   server.use("/auth", authRoutes);
+  server.use("/users", userRoutes);
 }
