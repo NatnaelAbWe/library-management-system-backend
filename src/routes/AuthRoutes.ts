@@ -7,13 +7,13 @@ const router = express.Router();
 
 router.post(
   "/register",
-  ValidateSchema(Schemas.user.create),
+  ValidateSchema(Schemas.user.create, "body"),
   AuthController.handleRegister,
 );
 
 router.post(
   "/login",
-  ValidateSchema(Schemas.user.login),
+  ValidateSchema(Schemas.user.login, "body"),
   AuthController.handleLogin,
 );
 export default router;

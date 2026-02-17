@@ -1,11 +1,24 @@
 import express from "express";
 import UserController from "../controllers/UserController.js";
+import { Schemas, ValidateSchema } from "../middlewares/validation.js";
 
 const router = express.Router();
 
 router.get("/", UserController.getAllUsers);
-router.get("/:userId", UserController.getUserById);
-router.put("/", UserController.updateUser);
-router.delete("/:userId", UserController.deleteUser);
+router.get(
+  "/:userId",
+  ValidateSchema(Schemas.user.userId, "params"),
+  UserController.getUserById,
+);
+router.put(
+  "/",
+  ValidateSchema(Schemas.user.update, "body"),
+  UserController.updateUser,
+);
+router.delete(
+  "/:userId",
+  ValidateSchema(Schemas.user.userId, "params"),
+  UserController.deleteUser,
+);
 
 export default router;
