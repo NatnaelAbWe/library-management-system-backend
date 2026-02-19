@@ -1,5 +1,6 @@
 import BookDao, { IBookModel } from "../daos/BookDao.js";
 import { IBook } from "../models/Book.js";
+import { BookDoesNotExistError } from "../utils/LibraryErrors.js";
 
 export async function findAllBooks(): Promise<IBookModel[]> {
   return await BookDao.find();
@@ -12,7 +13,7 @@ export async function modifyBook(book: IBookModel): Promise<IBookModel> {
     });
     if (id) return book;
 
-    throw new Error("Item does not exist");
+    throw new BookDoesNotExistError("Item does not exist");
   } catch (error: any) {
     throw error;
   }
@@ -28,7 +29,7 @@ export async function removeBook(barcode: string): Promise<string> {
     let id = await BookDao.findOneAndDelete({ barcode });
     if (id) return "Successfully deleted book";
 
-    throw new Error("Book does not exist");
+    throw new BookDoesNotExistError("Book does not exist");
   } catch (error: any) {
     throw error;
   }

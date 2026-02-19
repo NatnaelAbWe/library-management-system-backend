@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IBook } from "../models/Book";
+import { IBook } from "../models/Book.js";
 
-export interface IBookModel extends IBook, Document {}
+export interface IBookModel extends IBook, Document {
+  barcode: string;
+}
 
 const BookSchema = new Schema({
   barcode: { type: String, required: true, unique: true },

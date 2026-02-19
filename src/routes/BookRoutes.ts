@@ -1,11 +1,24 @@
 import express from "express";
 import BookController from "../controllers/BookController.js";
+import { Schemas, ValidateSchema } from "../middlewares/validation.js";
 
 const router = express.Router();
 
 router.get("/", BookController.getAllBooks);
-router.post("/", BookController.createBook);
-router.put("/", BookController.updateBook);
-router.delete("/:barcode", BookController.deleteBook);
+router.post(
+  "/",
+  ValidateSchema(Schemas.book.create, "body"),
+  BookController.createBook,
+);
+router.put(
+  "/",
+  ValidateSchema(Schemas.book.update, "body"),
+  BookController.updateBook,
+);
+router.delete(
+  "/:barcode",
+  ValidateSchema(Schemas.book.delete, "params"),
+  BookController.deleteBook,
+);
 
 export default router;

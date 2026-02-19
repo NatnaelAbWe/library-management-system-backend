@@ -2,13 +2,15 @@ import Joi, { ObjectSchema } from "joi";
 import { NextFunction, Response, Request } from "express";
 import { Iuser } from "../models/User.js";
 import { Iusermodel } from "../daos/userData.js";
+import { IBook } from "../models/Book.js";
+import { IBookModel } from "../daos/BookDao.js";
 
 export function ValidateSchema(schema: ObjectSchema, property: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       switch (property) {
         case "query":
-          await schema.validate(req.query);
+          await schema.validateAsync(req.query); // Changed to validateAsync for consistency
           break;
         case "params":
           await schema.validateAsync(req.params);
@@ -59,5 +61,42 @@ export const Schemas = {
         .required(),
       password: Joi.string(),
     }).unknown(true),
+  },
+  // Moved book out of user to the top level of Schemas
+  book: {
+    create: Joi.object<IBook>({
+      barcode: Joi.string()
+        .regex(/^(97(8|9))?\d{9}(\d|X)$/)
+        .required(),
+      cover: Joi.string().required(),
+      title: Joi.string().required(),
+      authors: Joi.array().required(),
+      description: Joi.string().required(),
+      subjects: Joi.array().required(),
+      publicationDate: Joi.date().required(),
+      publisher: Joi.string().required(),
+      pages: Joi.number().required(),
+      genre: Joi.string().required(),
+    }),
+    update: Joi.object<IBookModel>({
+      _id: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+      barcode: Joi.string()
+        .regex(/^(97(8|9))?\d{9}(\d|X)$/)
+        .required(),
+      cover: Joi.string().required(),
+      title: Joi.string().required(),
+      authors: Joi.array().required(),
+      description: Joi.string().required(),
+      subjects: Joi.array().required(),
+      publicationDate: Joi.date().required(),
+      publisher: Joi.string().required(),
+      pages: Joi.number().required(),
+      genre: Joi.string().required(),
+    }).unknown(true),
+    delete: Joi.object({
+      barcode: Joi.string()
+        .regex(/^(97(8|9))?\d{9}(\d|X)$/)
+        .required(),
+    }),
   },
 };
