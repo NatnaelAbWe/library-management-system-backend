@@ -58,6 +58,6 @@ export const Schemas = {
         .regex(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/)
         .required(),
       password: Joi.string(),
-    }),
+    }).unknown(true),
   },
 };
