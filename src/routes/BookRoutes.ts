@@ -21,4 +21,6 @@ router.delete(
   BookController.deleteBook,
 );
 
+router.get("/query", BookController.searchForBooksByQuery);
+
 export default router;
