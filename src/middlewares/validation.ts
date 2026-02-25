@@ -4,6 +4,7 @@ import { Iuser } from "../models/User.js";
 import { Iusermodel } from "../daos/userData.js";
 import { IBook } from "../models/Book.js";
 import { IBookModel } from "../daos/BookDao.js";
+import { ILibraryCard } from "../models/LibraryCard.js";
 
 export function ValidateSchema(schema: ObjectSchema, property: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -96,6 +97,18 @@ export const Schemas = {
     delete: Joi.object({
       barcode: Joi.string()
         .regex(/^(97(8|9))?\d{9}(\d|X)$/)
+        .required(),
+    }),
+  },
+  libraryCard: {
+    create: Joi.object<ILibraryCard>({
+      user: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+    }),
+    get: Joi.object<{ cardId: string }>({
+      cardId: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
         .required(),
     }),
   },
