@@ -34,7 +34,7 @@ export async function modifyRecord(
     );
 
     if (updatedRecord) {
-      let book = await findBookById(record.item);
+      let book = await findbyBookById(record.item);
       let records = book.records;
 
       records[0] = updatedRecord;

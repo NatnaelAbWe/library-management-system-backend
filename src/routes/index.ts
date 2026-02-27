@@ -3,6 +3,7 @@ import authRoutes from "./AuthRoutes.js";
 import userRoutes from "./UserRoutes.js";
 import bookRoutes from "./BookRoutes.js";
 import cardRoutes from "./LibraryCardRoutes.js";
+import loanRoutes from "./LoanRecordRoutes.js";
 
 export function registerRoutes(server: Express) {
   server.get("/health", (req: Request, res: Response) => {
@@ -13,4 +14,5 @@ export function registerRoutes(server: Express) {
   server.use("/users", userRoutes);
   server.use("/book", bookRoutes);
   server.use("/card", cardRoutes);
+  server.use("/loan", loanRoutes);
 }
