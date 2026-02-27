@@ -8,10 +8,17 @@ export async function registerLibraryCard(
 ): Promise<ILibraryCardModel> {
   try {
     const savedCard = new LibraryCardDao(card);
-    return await savedCard.save();
+    const result = await savedCard.save();
+    return result;
   } catch (error: any) {
-    let c = await LibraryCardDao.findOne({ user: card.user }).populate("user");
-    if (c) return c;
+    const existingCard = await LibraryCardDao.findOne({ user: card.user });
+
+    if (existingCard) {
+      return existingCard;
+    }
+
+    // If it wasn't a duplicate error, it's a real DB issue (connection, validation, etc.)
+    console.error("Critical Service Error:", error.message);
     throw error;
   }
 }
