@@ -5,6 +5,8 @@ import { Iusermodel } from "../daos/userData.js";
 import { IBook } from "../models/Book.js";
 import { IBookModel } from "../daos/BookDao.js";
 import { ILibraryCard } from "../models/LibraryCard.js";
+import { ILoanRecord } from "../models/LoanRecords.js";
+import { ILoanRecordModel } from "../daos/LoanRecordDao.js";
 
 export function ValidateSchema(schema: ObjectSchema, property: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -110,6 +112,59 @@ export const Schemas = {
       cardId: Joi.string()
         .regex(/^[0-9a-fA-F]{24}$/)
         .required(),
+    }),
+  },
+  loan: {
+    create: Joi.object<ILoanRecord>({
+      status: Joi.string().valid("AVAILABLE", "LOANED").required(),
+      loanedDate: Joi.date().required(),
+      // dueDate: Joi.date().required(),
+      returnedDate: Joi.date(),
+      patron: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+      employeeOut: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+      employeeIn: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+      item: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+    }),
+    update: Joi.object<ILoanRecordModel>({
+      _id: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+      status: Joi.string().valid("AVAILABLE", "LOANED").required(),
+      loanedDate: Joi.date().required(),
+      // dueDate: Joi.date().required(),
+      returnedDate: Joi.date(),
+      patron: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+      employeeOut: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+      employeeIn: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+      item: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .required(),
+    }),
+    query: Joi.object<{ property: string; value: string | Date }>({
+      property: Joi.string()
+        .valid(
+          "_id",
+          "status",
+          "loanedDate",
+          "dueDate",
+          "returnedDate",
+          "patron",
+          "employeeOut",
+          "employeeIn",
+          "item",
+        )
+        .required(),
+      value: Joi.alternatives().try(Joi.string(), Joi.date()).required(),
     }),
   },
 };
