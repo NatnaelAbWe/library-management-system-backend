@@ -1,9 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IBook } from "../models/Book.js";
+import { LoanRecordSchema } from "./LoanRecordDao.js";
 
-export interface IBookModel extends IBook, Document {
-  barcode: string;
-}
+export interface IBookModel extends IBook, Document {}
 
 const BookSchema = new Schema({
   barcode: { type: String, required: true, unique: true },
@@ -16,6 +15,7 @@ const BookSchema = new Schema({
   publisher: { type: String, required: true },
   pages: { type: Number, required: true },
   genre: { type: String, required: true },
+  records: [LoanRecordSchema],
 });
 
 export default mongoose.model<IBookModel>("Book", BookSchema);
