@@ -5,7 +5,6 @@ import {
 } from "../services/LibraryCardSServices.js";
 import { ILibraryCard } from "../models/LibraryCard.js";
 
-// Use 'export' keyword directly on the function
 export async function getLibraryCard(req: Request, res: Response) {
   const { cardId } = req.params;
   if (typeof cardId !== "string") {
@@ -23,9 +22,11 @@ export async function createLibraryCard(req: Request, res: Response) {
   const card: ILibraryCard = req.body;
   try {
     let libraryCard = await registerLibraryCard(card);
-    res
-      .status(201)
-      .json({ message: "Generated library card for user", libraryCard });
+    // Return the _id specifically to match your Redux string expectation
+    res.status(201).json({
+      message: "Generated library card for user",
+      libraryCard: libraryCard._id,
+    });
   } catch (error) {
     res
       .status(500)

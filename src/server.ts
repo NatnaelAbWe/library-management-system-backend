@@ -30,7 +30,7 @@ server.use(cors());
     server.listen(port, () => {
       console.log("your app is running on port: ", port);
     });
-  } catch {
-    console.log("could not make a connection to the database");
+  } catch (e) {
+    console.log("could not make a connection to the database", e);
   }
 })();
